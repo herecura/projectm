@@ -7,7 +7,7 @@
 pkgbase=projectm
 pkgname=('projectm' 'projectm-sdl' 'projectm-pulseaudio')
 pkgver=3.1.0
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url='https://github.com/projectM-visualizer/projectm'
 license=('LGPL')
@@ -32,10 +32,17 @@ package_projectm() {
     pkgdesc='Music visualizer which uses 3D accelerated iterative image based rendering'
     depends=('libgl' 'glm' 'ftgl' 'glew')
 
+
+    cd "$srcdir/projectM-$pkgver"
+    make DESTDIR="$pkgdir" install-data-am
+    cd "$srcdir/projectM-$pkgver/src"
+    make DESTDIR="$pkgdir" install-am
     cd "$srcdir/projectM-$pkgver/src/libprojectM"
     make DESTDIR="$pkgdir" install
     cd "$srcdir/projectM-$pkgver/src/NativePresets"
     make DESTDIR="$pkgdir" install
+
+    find "$pkgdir" -iname "\.*" -delete
 }
 
 package_projectm-sdl() {
